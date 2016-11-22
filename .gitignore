@@ -1,0 +1,53 @@
+#
+# OSX
+#
+
+.DS_Store
+
+#
+# Windows
+#
+
+Thumbs.db
+
+#
+# Maven
+#
+
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+
+#
+# Eclipse
+#
+
+.classpath
+.project
+.metadata
+.settings/
+
+#
+# JetBrains IDEs
+#
+
+.idea
+*.iws
+/out/
+.idea_modules/
+
+#
+# Vim
+#
+
+# swap files
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+
+# temp files
+*~
