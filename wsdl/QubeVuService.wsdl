@@ -1,0 +1,595 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://postea.com/WebServices/QubeVu" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://postea.com/WebServices/QubeVu" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://postea.com/WebServices/QubeVu">
+      <s:element name="QVServiceResponse" nillable="true" type="tns:QVServiceResponse" />
+      <s:complexType name="QVServiceResponse">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Error" type="tns:Error" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Error">
+        <s:attribute name="Code" type="s:int" use="required" />
+        <s:attribute name="Message" type="s:string" />
+      </s:complexType>
+      <s:element name="QVStatus" nillable="true" type="tns:QVStatus" />
+      <s:complexType name="QVStatus">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:QVServiceResponse">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="DateTime" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="CapturedData" type="tns:CapturedData" />
+              <s:element minOccurs="0" maxOccurs="1" name="Crc" type="s:string" />
+            </s:sequence>
+            <s:attribute name="CaptureId" type="s:string" />
+            <s:attribute name="Status" type="s:string" />
+            <s:attribute name="ExtendedStatus" type="s:string" />
+            <s:attribute name="OutOfBounds" type="s:int" use="required" />
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="CapturedData">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ExternalData" type="tns:ExternalData" />
+          <s:element minOccurs="0" maxOccurs="1" name="DateTime" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Weight" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="ScaleData" type="tns:ScaleData" />
+          <s:element minOccurs="0" maxOccurs="1" name="Dimensions" type="tns:Dimensions" />
+          <s:element minOccurs="0" maxOccurs="1" name="RawDimensions" type="tns:RawDimensions" />
+          <s:element minOccurs="0" maxOccurs="1" name="TrackerImage" type="tns:TrackerImage" />
+          <s:element minOccurs="0" maxOccurs="1" name="LowResImages" type="tns:ArrayOfLowResImage" />
+          <s:element minOccurs="0" maxOccurs="1" name="HighResImages" type="tns:ArrayOfHighResImage" />
+        </s:sequence>
+        <s:attribute name="CaptureDefinitionName" type="s:string" />
+        <s:attribute name="CaptureId" type="s:string" />
+      </s:complexType>
+      <s:complexType name="ExternalData">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Barcode" type="tns:Barcode" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Barcode">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="RawData" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EncodedData" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DecodedData" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TextData" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ScaleData">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Error" type="tns:Error" />
+          <s:element minOccurs="1" maxOccurs="1" name="Weight" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ScaleFactor" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsStable" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="WeightUnit" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RawData" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DisplayWeight" type="s:string" />
+        </s:sequence>
+        <s:attribute name="Name" type="s:string" />
+      </s:complexType>
+      <s:complexType name="Dimensions">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Length" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Width" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Height" type="s:decimal" />
+        </s:sequence>
+        <s:attribute name="UnknownDimensions" type="s:boolean" />
+        <s:attribute name="UnknownDimensionsReason" type="s:string" />
+        <s:attribute name="Irregular" type="s:boolean" use="required" />
+        <s:attribute name="Undersize" type="s:int" use="required" />
+        <s:attribute name="Oversize" type="s:int" use="required" />
+        <s:attribute name="Refinement" type="s:int" use="required" />
+        <s:attribute name="DimUnit" type="s:string" />
+        <s:attribute name="OutOfBounds" type="s:int" use="required" />
+      </s:complexType>
+      <s:complexType name="RawDimensions">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Length" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Width" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Height" type="s:decimal" />
+        </s:sequence>
+        <s:attribute name="DimUnit" type="s:string" />
+      </s:complexType>
+      <s:complexType name="TrackerImage">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:ItemImage" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ItemImage">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Image">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="ItemRect" type="tns:QVRect" />
+              <s:element minOccurs="0" maxOccurs="1" name="ItemWireFrame" type="tns:WireFrame" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Image">
+        <s:attribute name="Url" type="s:string" />
+        <s:attribute name="Name" type="s:string" />
+        <s:attribute name="CamLocation" type="s:string" />
+      </s:complexType>
+      <s:complexType name="QVRect">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CenterX" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="CenterY" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="D1" type="s:float" />
+          <s:element minOccurs="1" maxOccurs="1" name="D2" type="s:float" />
+          <s:element minOccurs="1" maxOccurs="1" name="Theta" type="s:float" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="WireFrame">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Faces" type="tns:ArrayOfFace" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfFace">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Face" nillable="true" type="tns:Face" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Face">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Vertices" type="tns:ArrayOfPoint" />
+        </s:sequence>
+        <s:attribute name="Visible" type="s:boolean" use="required" />
+      </s:complexType>
+      <s:complexType name="ArrayOfPoint">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Point" type="tns:Point" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Point">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="X" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Y" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="HighResImage">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:ItemImage">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Barcodes" type="tns:ArrayOfBarcode" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfBarcode">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Barcode" nillable="true" type="tns:Barcode" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="LowResImage">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:ItemImage" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfLowResImage">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="LowResImage" nillable="true" type="tns:LowResImage" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfHighResImage">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="HighResImage" nillable="true" type="tns:HighResImage" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="QVCaptureDefinitionList" nillable="true" type="tns:QVCaptureDefinitionList" />
+      <s:complexType name="QVCaptureDefinitionList">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:QVServiceResponse">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="CaptureDefinitions" type="tns:ArrayOfCaptureDefinition" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfCaptureDefinition">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="CaptureDefinition" nillable="true" type="tns:CaptureDefinition" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CaptureDefinition">
+        <s:attribute name="Name" type="s:string" />
+      </s:complexType>
+      <s:element name="CaptureDefinitionDetail" nillable="true" type="tns:CaptureDefinitionDetail" />
+      <s:complexType name="CaptureDefinitionDetail">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="TimeoutMsecs" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="LowResImages" type="tns:ArrayOfLowResCamCapture" />
+          <s:element minOccurs="0" maxOccurs="1" name="HighResImages" type="tns:ArrayOfHighResCamCapture" />
+          <s:element minOccurs="1" maxOccurs="1" name="NoDimItems" type="tns:ItemTypeEnum" />
+        </s:sequence>
+        <s:attribute name="Name" type="s:string" />
+      </s:complexType>
+      <s:complexType name="ArrayOfLowResCamCapture">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="LowResCamCapture" nillable="true" type="tns:LowResCamCapture" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="LowResCamCapture">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ResX" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ResY" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Markings" type="tns:Markings" />
+        </s:sequence>
+        <s:attribute name="ImageName" type="s:string" />
+      </s:complexType>
+      <s:complexType name="Markings">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="SerialNumber" type="tns:SerialNumber" />
+          <s:element minOccurs="0" maxOccurs="1" name="DateTimeStamp" type="tns:DateTimeStamp" />
+          <s:element minOccurs="0" maxOccurs="1" name="ScanId" type="tns:ScanId" />
+          <s:element minOccurs="0" maxOccurs="1" name="Dimensions" type="tns:Markings_Dimensions" />
+          <s:element minOccurs="0" maxOccurs="1" name="Indicators" type="tns:Indicators" />
+          <s:element minOccurs="0" maxOccurs="1" name="ItemOutline" type="tns:ItemOutline" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SerialNumber">
+        <s:attribute name="Visible" type="s:boolean" use="required" />
+      </s:complexType>
+      <s:complexType name="DateTimeStamp">
+        <s:attribute name="Visible" type="s:boolean" use="required" />
+      </s:complexType>
+      <s:complexType name="ScanId">
+        <s:attribute name="Visible" type="s:boolean" use="required" />
+      </s:complexType>
+      <s:complexType name="Markings_Dimensions">
+        <s:attribute name="Visible" type="s:boolean" use="required" />
+      </s:complexType>
+      <s:complexType name="Indicators">
+        <s:attribute name="Visible" type="s:boolean" use="required" />
+      </s:complexType>
+      <s:complexType name="ItemOutline">
+        <s:attribute name="Visible" type="s:boolean" use="required" />
+      </s:complexType>
+      <s:complexType name="ArrayOfHighResCamCapture">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="HighResCamCapture" nillable="true" type="tns:HighResCamCapture" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="HighResCamCapture">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="MinDpi" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="MaxDpi" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="BarcodeCapture" type="tns:BarcodeCapture" />
+        </s:sequence>
+        <s:attribute name="ImageName" type="s:string" />
+      </s:complexType>
+      <s:complexType name="BarcodeCapture">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="BCTypes" type="tns:BCTypeEnum" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="BCTypeEnum">
+        <s:list>
+          <s:simpleType>
+            <s:restriction base="s:string">
+              <s:enumeration value="None" />
+              <s:enumeration value="EAN13" />
+              <s:enumeration value="CODE128" />
+              <s:enumeration value="CODE39" />
+              <s:enumeration value="CODE93" />
+              <s:enumeration value="EAN8" />
+              <s:enumeration value="UPCE" />
+              <s:enumeration value="UPCX" />
+              <s:enumeration value="INT25" />
+              <s:enumeration value="CODABAR" />
+              <s:enumeration value="PATCHCODE" />
+              <s:enumeration value="QRCODE" />
+              <s:enumeration value="DATAMATRIX" />
+              <s:enumeration value="PDF417" />
+            </s:restriction>
+          </s:simpleType>
+        </s:list>
+      </s:simpleType>
+      <s:simpleType name="ItemTypeEnum">
+        <s:list>
+          <s:simpleType>
+            <s:restriction base="s:string">
+              <s:enumeration value="" />
+              <s:enumeration value="None" />
+              <s:enumeration value="Flat" />
+              <s:enumeration value="Parcel" />
+              <s:enumeration value="All" />
+            </s:restriction>
+          </s:simpleType>
+        </s:list>
+      </s:simpleType>
+      <s:element name="QVDeviceInfo" nillable="true" type="tns:QVDeviceInfo" />
+      <s:complexType name="QVDeviceInfo">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:QVServiceResponse">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="DeviceInfo" type="tns:DeviceInfo" />
+              <s:element minOccurs="0" maxOccurs="1" name="NetworkInfo" type="tns:NetworkInfo" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="DeviceInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ModelNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Manufacturer" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FirmwareVersion" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SerialNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CertificateNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CertificateType" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FirmwareCrc" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="NetworkInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Ip" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NetworkMask" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Gateway" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsDhcp" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="LeaseExpires" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="MacAddress" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Hostname" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="SslEnabled" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="QVSystemTime" nillable="true" type="tns:QVSystemTime" />
+      <s:complexType name="QVSystemTime">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:QVServiceResponse">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Format" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="SystemTime" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="RestartHttpPostIn">
+    <wsdl:part name="restartMode" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="RestartHttpPostOut">
+    <wsdl:part name="Body" element="tns:QVServiceResponse" />
+  </wsdl:message>
+  <wsdl:message name="StatusHttpPostIn" />
+  <wsdl:message name="StatusHttpPostOut">
+    <wsdl:part name="Body" element="tns:QVStatus" />
+  </wsdl:message>
+  <wsdl:message name="CaptureHttpPostIn">
+    <wsdl:part name="captureDefinitionName" type="s:string" />
+    <wsdl:part name="captureParameters" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="CaptureHttpPostOut">
+    <wsdl:part name="Body" element="tns:QVServiceResponse" />
+  </wsdl:message>
+  <wsdl:message name="CaptureDefinitionListHttpPostIn">
+    <wsdl:part name="filter" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="CaptureDefinitionListHttpPostOut">
+    <wsdl:part name="Body" element="tns:QVCaptureDefinitionList" />
+  </wsdl:message>
+  <wsdl:message name="CreateCaptureDefinitionHttpPostIn">
+    <wsdl:part name="name" type="s:string" />
+    <wsdl:part name="definitionString" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="CreateCaptureDefinitionHttpPostOut">
+    <wsdl:part name="Body" element="tns:QVServiceResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCaptureDefinitionHttpPostIn">
+    <wsdl:part name="name" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetCaptureDefinitionHttpPostOut">
+    <wsdl:part name="Body" element="tns:CaptureDefinitionDetail" />
+  </wsdl:message>
+  <wsdl:message name="DeleteCaptureDefinitionHttpPostIn">
+    <wsdl:part name="name" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="DeleteCaptureDefinitionHttpPostOut">
+    <wsdl:part name="Body" element="tns:QVServiceResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetZeroHttpPostIn" />
+  <wsdl:message name="SetZeroHttpPostOut">
+    <wsdl:part name="Body" element="tns:QVServiceResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetZeroHeightHttpPostIn">
+    <wsdl:part name="usingCalibrationObject" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SetZeroHeightHttpPostOut">
+    <wsdl:part name="Body" element="tns:QVServiceResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeviceInfoHttpPostIn" />
+  <wsdl:message name="DeviceInfoHttpPostOut">
+    <wsdl:part name="Body" element="tns:QVDeviceInfo" />
+  </wsdl:message>
+  <wsdl:message name="GetSystemTimeHttpPostIn">
+    <wsdl:part name="format" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetSystemTimeHttpPostOut">
+    <wsdl:part name="Body" element="tns:QVSystemTime" />
+  </wsdl:message>
+  <wsdl:message name="SetSystemTimeHttpPostIn">
+    <wsdl:part name="time" type="s:string" />
+    <wsdl:part name="timezone" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SetSystemTimeHttpPostOut">
+    <wsdl:part name="Body" element="tns:QVServiceResponse" />
+  </wsdl:message>
+  <wsdl:portType name="QubeVuServiceHttpPost">
+    <wsdl:operation name="Restart">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Restarts the QubeVu service or device.</wsdl:documentation>
+      <wsdl:input message="tns:RestartHttpPostIn" />
+      <wsdl:output message="tns:RestartHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Status">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns current status of the device including item dimensions when available.</wsdl:documentation>
+      <wsdl:input message="tns:StatusHttpPostIn" />
+      <wsdl:output message="tns:StatusHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Capture">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Used to manually trigger capturing dimensions and/or image(s).</wsdl:documentation>
+      <wsdl:input message="tns:CaptureHttpPostIn" />
+      <wsdl:output message="tns:CaptureHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CaptureDefinitionList">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns list of capture definitions.</wsdl:documentation>
+      <wsdl:input message="tns:CaptureDefinitionListHttpPostIn" />
+      <wsdl:output message="tns:CaptureDefinitionListHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateCaptureDefinition">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Creates a new capture definition or overwrites an exisiting one.</wsdl:documentation>
+      <wsdl:input message="tns:CreateCaptureDefinitionHttpPostIn" />
+      <wsdl:output message="tns:CreateCaptureDefinitionHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCaptureDefinition">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns the specified capture definition.</wsdl:documentation>
+      <wsdl:input message="tns:GetCaptureDefinitionHttpPostIn" />
+      <wsdl:output message="tns:GetCaptureDefinitionHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteCaptureDefinition">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Deletes the specified capture definition.</wsdl:documentation>
+      <wsdl:input message="tns:DeleteCaptureDefinitionHttpPostIn" />
+      <wsdl:output message="tns:DeleteCaptureDefinitionHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetZero">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Sets the device to zero.</wsdl:documentation>
+      <wsdl:input message="tns:SetZeroHttpPostIn" />
+      <wsdl:output message="tns:SetZeroHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetZeroHeight">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Sets the device height to zero. Specify whether a calibration object is used or not.</wsdl:documentation>
+      <wsdl:input message="tns:SetZeroHeightHttpPostIn" />
+      <wsdl:output message="tns:SetZeroHeightHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeviceInfo">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets QubeVu device and network information.</wsdl:documentation>
+      <wsdl:input message="tns:DeviceInfoHttpPostIn" />
+      <wsdl:output message="tns:DeviceInfoHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSystemTime">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets system time in specified format. Format should be +sequence as define here: http://linux.die.net/man/1/date If no format is provided, +%Y%m%d%H%M%S %z %Z will be used, which means YYYYMMDDHHMMSS 3000 EDT</wsdl:documentation>
+      <wsdl:input message="tns:GetSystemTimeHttpPostIn" />
+      <wsdl:output message="tns:GetSystemTimeHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetSystemTime">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Sets system time and/or timezone. Time must use format YYYYMMDDHHMMSS. Timezone are based on Ubuntu Trusty timezones, e.g. "America/New_York"</wsdl:documentation>
+      <wsdl:input message="tns:SetSystemTimeHttpPostIn" />
+      <wsdl:output message="tns:SetSystemTimeHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="QubeVuServiceHttpPost" type="tns:QubeVuServiceHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="Restart">
+      <http:operation location="/Restart" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Status">
+      <http:operation location="/Status" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Capture">
+      <http:operation location="/Capture" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CaptureDefinitionList">
+      <http:operation location="/CaptureDefinitionList" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateCaptureDefinition">
+      <http:operation location="/CreateCaptureDefinition" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCaptureDefinition">
+      <http:operation location="/GetCaptureDefinition" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteCaptureDefinition">
+      <http:operation location="/DeleteCaptureDefinition" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetZero">
+      <http:operation location="/SetZero" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetZeroHeight">
+      <http:operation location="/SetZeroHeight" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeviceInfo">
+      <http:operation location="/DeviceInfo" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSystemTime">
+      <http:operation location="/GetSystemTime" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetSystemTime">
+      <http:operation location="/SetSystemTime" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="QubeVuService">
+    <wsdl:port name="QubeVuServiceHttpPost" binding="tns:QubeVuServiceHttpPost">
+      <http:address location="http://QubeVu/WebServices/QubeVuService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

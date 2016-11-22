@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://postea.com/WebServices/QubeVu" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://postea.com/WebServices/QubeVu" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://postea.com/WebServices/QubeVu">
+      <s:element name="QVServiceResponse" nillable="true" type="tns:QVServiceResponse" />
+      <s:complexType name="QVServiceResponse">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Error" type="tns:Error" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Error">
+        <s:attribute name="Code" type="s:int" use="required" />
+        <s:attribute name="Message" type="s:string" />
+      </s:complexType>
+      <s:element name="ScaleData" nillable="true" type="tns:ScaleData" />
+      <s:complexType name="ScaleData">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Error" type="tns:Error" />
+          <s:element minOccurs="1" maxOccurs="1" name="Weight" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ScaleFactor" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsStable" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="WeightUnit" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RawData" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DisplayWeight" type="s:string" />
+        </s:sequence>
+        <s:attribute name="Name" type="s:string" />
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="SetCurrentWeightHttpPostIn">
+    <wsdl:part name="weight" type="s:string" />
+    <wsdl:part name="scaleFactor" type="s:string" />
+    <wsdl:part name="isStable" type="s:string" />
+    <wsdl:part name="weightUnit" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SetCurrentWeightHttpPostOut">
+    <wsdl:part name="Body" element="tns:QVServiceResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCurrentWeightHttpPostIn" />
+  <wsdl:message name="GetCurrentWeightHttpPostOut">
+    <wsdl:part name="Body" element="tns:ScaleData" />
+  </wsdl:message>
+  <wsdl:message name="ZeroScaleHttpPostIn" />
+  <wsdl:message name="ZeroScaleHttpPostOut">
+    <wsdl:part name="Body" element="tns:QVServiceResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ScaleServiceHttpPost">
+    <wsdl:operation name="SetCurrentWeight">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Used to send weight to QubeVu device from external scale.</wsdl:documentation>
+      <wsdl:input message="tns:SetCurrentWeightHttpPostIn" />
+      <wsdl:output message="tns:SetCurrentWeightHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCurrentWeight">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Used to get current weight from scale that is connected to QubeVu device.</wsdl:documentation>
+      <wsdl:input message="tns:GetCurrentWeightHttpPostIn" />
+      <wsdl:output message="tns:GetCurrentWeightHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ZeroScale">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Used to zero scale that is connected to QubeVu device.</wsdl:documentation>
+      <wsdl:input message="tns:ZeroScaleHttpPostIn" />
+      <wsdl:output message="tns:ZeroScaleHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ScaleServiceHttpPost" type="tns:ScaleServiceHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="SetCurrentWeight">
+      <http:operation location="/SetCurrentWeight" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCurrentWeight">
+      <http:operation location="/GetCurrentWeight" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ZeroScale">
+      <http:operation location="/ZeroScale" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ScaleService">
+    <wsdl:port name="ScaleServiceHttpPost" binding="tns:ScaleServiceHttpPost">
+      <http:address location="http://QubeVu/WebServices/ScaleService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
